@@ -56,18 +56,21 @@ def welcome():
 def predict():
     data_2d = None
     success_response = []
+
     try: 
         web_request = request.get_json(force=True)
+        scaler = pickle.load(open("C:/Users/sandu/OneDrive/Desktop/ReactJS/flask-app/scaler.pkl",'rb'))
+        model = pickle.load(open("C:/Users/sandu/OneDrive/Desktop/ReactJS/flask-app/votingModel.pkl", 'rb'))
         if(len(web_request["wp"]) > 0):
             wp = web_request["wp"]
             for i in range(len(wp)):
                 data = wp[i]
 
                 data_2d = np.array([list(data.values())]).reshape(1, -1)
-                scaler = pickle.load(open("C:/Users/sandu/OneDrive/Desktop/ReactJS/flask-app/scaler.pkl",'rb'))
+                
                 scaled_data = scaler.transform(data_2d)
                 print(scaled_data)
-                model = pickle.load(open("C:/Users/sandu/OneDrive/Desktop/ReactJS/flask-app/votingModel.pkl", 'rb'))
+                
                 results = model.predict(scaled_data)
                 print(results)
 
